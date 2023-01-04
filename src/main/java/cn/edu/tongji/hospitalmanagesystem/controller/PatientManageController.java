@@ -11,13 +11,7 @@ import cn.dev33.satoken.util.SaResult;
 
 import java.io.IOException;
 
-/**
- * @author tangshuo
- * @version 1.0.0
- * @ClassName PatientManageController.java
- * @Description TODO
- * @createTime 2023年01月04日 10:09:00
- */
+
 @Api(tags = "用户管理")
 @RestController
 @RequestMapping("user")
