@@ -1,2 +1,2 @@
 # HospitalManageSystem
-Sy Hospital
+ Hospital
