@@ -38,4 +38,16 @@ public class DoctorManageServiceImpl implements DoctorManageService {
             return patient.getId();
         }
     }
+
+    @Override
+    public DoctorEntity getDoctorEntity(Long id) {
+        DoctorEntity doctorEntity = doctorRepository.findDoctorEntityById(id);
+        return doctorEntity;
+    }
+
+    @Override
+    public Long update(DoctorEntity doctorEntity) {
+        doctorRepository.save(doctorEntity);
+        return doctorEntity.getId();
+    }
 }

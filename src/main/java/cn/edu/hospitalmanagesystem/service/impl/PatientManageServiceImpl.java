@@ -65,4 +65,27 @@ public class PatientManageServiceImpl implements PatientManageService {
             return patient.getId();
         }
     }
+
+    @Override
+    public PatientEntity getPatientEntity(Long id) {
+        PatientEntity patientEntity = patientRepository.findPatientEntityById(id);
+        return patientEntity;
+
+    }
+
+    @Override
+    public Long update(PatientEntity patientEntity) {
+        patientRepository.save(patientEntity);
+
+        return patientEntity.getId();
+    }
+
+    @Override
+    public void add(Long id, int add) {
+        PatientEntity patientEntity = patientRepository.findPatientEntityById(id);
+        Integer accountBalance = patientEntity.getAccountBalance();
+        accountBalance+=add;
+        patientEntity.setAccountBalance(accountBalance);
+        patientRepository.save(patientEntity);
+    }
 }
