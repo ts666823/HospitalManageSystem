@@ -1,4 +1,4 @@
-package cn.edu.tongji.hospitalmanagesystem;
+package cn.edu.hospitalmanagesystem;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
