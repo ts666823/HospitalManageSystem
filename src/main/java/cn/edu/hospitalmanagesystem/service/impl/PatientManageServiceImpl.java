@@ -1,23 +1,17 @@
-package cn.edu.tongji.hospitalmanagesystem.service.impl;
+package cn.edu.hospitalmanagesystem.service.impl;
 
-import cn.edu.tongji.hospitalmanagesystem.enums.LoginStatus;
-import cn.edu.tongji.hospitalmanagesystem.enums.SignupStatus;
-import cn.edu.tongji.hospitalmanagesystem.model.PatientEntity;
-import cn.edu.tongji.hospitalmanagesystem.repository.PatientRepository;
-import cn.edu.tongji.hospitalmanagesystem.service.PatientManageService;
+import cn.edu.hospitalmanagesystem.enums.LoginStatus;
+import cn.edu.hospitalmanagesystem.enums.SignupStatus;
+import cn.edu.hospitalmanagesystem.model.PatientEntity;
+import cn.edu.hospitalmanagesystem.repository.PatientRepository;
+import cn.edu.hospitalmanagesystem.service.PatientManageService;
 import com.github.yitter.idgen.YitIdHelper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Objects;
 
-/**
- * @author tangshuo
- * @version 1.0.0
- * @ClassName PatientManageServiceImpl.java
- * @Description TODO
- * @createTime 2023年01月04日 10:43:00
- */
+
 @Service
 public class PatientManageServiceImpl implements PatientManageService {
     @Resource

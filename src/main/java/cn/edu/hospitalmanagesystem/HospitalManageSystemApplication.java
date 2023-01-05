@@ -1,4 +1,4 @@
-package cn.edu.tongji.hospitalmanagesystem;
+package cn.edu.hospitalmanagesystem;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

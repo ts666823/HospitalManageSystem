@@ -1,23 +1,19 @@
-package cn.edu.tongji.hospitalmanagesystem.controller;
+package cn.edu.hospitalmanagesystem.controller;
 
-import cn.edu.tongji.hospitalmanagesystem.model.PatientEntity;
-import cn.edu.tongji.hospitalmanagesystem.service.PatientManageService;
+import cn.edu.hospitalmanagesystem.bean.LoginBean;
+import cn.edu.hospitalmanagesystem.model.PatientEntity;
+import cn.edu.hospitalmanagesystem.service.DoctorManageService;
+import cn.edu.hospitalmanagesystem.service.PatientManageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import cn.dev33.satoken.util.SaResult;
 
 import java.io.IOException;
+import java.util.HashMap;
 
-/**
- * @author tangshuo
- * @version 1.0.0
- * @ClassName PatientManageController.java
- * @Description TODO
- * @createTime 2023年01月04日 10:09:00
- */
+
 @Api(tags = "用户管理")
 @RestController
 @RequestMapping("user")
@@ -25,18 +21,39 @@ public class PatientManageController {
     @Autowired
     private PatientManageService patientManageService;
 
-    /// TODO 加密
+    @Autowired
+    private DoctorManageService doctorManageService;
+
     @GetMapping("/login")
-    @ApiOperation(value = "病人登录", notes = "输入账户和密码来登录账户，返回病人ID")
+    @ApiOperation(value = "病人/医生登录", notes = "输入账户和密码来登录账户，返回病人ID")
     public SaResult userLogin(@RequestParam("idNumber") String idNumber, @RequestParam("password") String password) throws IOException {
+
         switch (patientManageService.patientLogin(idNumber, password)) {
-            case IncorrectPassword:
-                return SaResult.code(400).setMsg("Incorrect Password");
             case Success:
                 long id = patientManageService.getIdByIdNumber(idNumber);
-                return SaResult.ok().setData(String.valueOf(id));
+                System.out.println(id);
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("id",id+"");
+                map.put("type",0);
+                return SaResult.ok().setData(map);
+
+            case IncorrectPassword:
+                return SaResult.code(400).setMsg("Incorrect Password");
             case NoPatient:
-                return SaResult.code(404).setMsg("No Such Patient");
+            switch (doctorManageService.doctorLogin(idNumber, password)){
+                case Success:
+                    long mid = doctorManageService.getIdByIdNumber(idNumber);
+                    System.out.println(mid);
+                    HashMap<String, Object> mmap = new HashMap<>();
+                    mmap.put("id",mid+"");
+                    mmap.put("type",1);
+                    return SaResult.ok().setData(mmap);
+
+                case IncorrectPassword:
+                    return SaResult.code(400).setMsg("Incorrect Password");
+                case NoDoctor:
+                    return SaResult.code(404).setMsg("No Such Person");
+            }
         }
         return SaResult.code(500).setMsg("Unknown State");
     }

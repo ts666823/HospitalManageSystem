@@ -1,16 +1,9 @@
-package cn.edu.tongji.hospitalmanagesystem.config;
+package cn.edu.hospitalmanagesystem.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-/**
- * @author tangshuo
- * @version 1.0.0
- * @ClassName CorsConfig.java
- * @Description TODO
- * @createTime 2023年01月04日 11:27:00
- */
 @Configuration
 public class CorsConfig implements WebMvcConfigurer {
     @Override

@@ -1,16 +1,10 @@
-package cn.edu.tongji.hospitalmanagesystem.model;
+package cn.edu.hospitalmanagesystem.model;
 
 
 import javax.persistence.*;
 import java.util.Objects;
 
-/**
- * @author tangshuo
- * @version 1.0.0
- * @ClassName PatientEntity.java
- * @Description TODO
- * @createTime 2023年01月04日 10:39:00
- */
+
 @Entity
 @Table(name = "patient", schema = "Study", catalog = "")
 public class PatientEntity {

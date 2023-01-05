@@ -1,4 +1,4 @@
-package cn.edu.tongji.hospitalmanagesystem.config;
+package cn.edu.hospitalmanagesystem.config;
 
 import io.swagger.annotations.ApiOperation;
 import org.springframework.context.annotation.Bean;
@@ -11,13 +11,7 @@ import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
-/**
- * @author tangshuo
- * @version 1.0.0
- * @ClassName Swagger3Config.java
- * @Description TODO
- * @createTime 2022年01月23日 15:22:00
- */
+
 @Configuration
 public class Swagger3Config {
     @Bean
