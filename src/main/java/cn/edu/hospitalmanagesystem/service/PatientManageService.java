@@ -12,4 +12,7 @@ public interface PatientManageService {
     SignupStatus patientSignup(String name, String idNumber, String pwd, String sex, int account_balance);
     LoginStatus patientLogin(String idNumber, String pwd);
     Long getIdByIdNumber(String idNumber);
+    PatientEntity getPatientEntity(Long id);
+    Long update(PatientEntity patientEntity);
+    void add(Long id,int add);
 }

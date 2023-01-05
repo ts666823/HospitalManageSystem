@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PatientRepository extends JpaRepository<PatientEntity, Long> {
     PatientEntity findPatientEntityByIdNumber(String idNumber);
+
+    PatientEntity findPatientEntityById(Long id);
 }
