@@ -35,7 +35,7 @@ public class PatientManageController {
                 System.out.println(id);
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("id",id+"");
-                map.put("type",0);
+                map.put("type",1);
                 return SaResult.ok().setData(map);
 
             case IncorrectPassword:
@@ -47,7 +47,7 @@ public class PatientManageController {
                     System.out.println(mid);
                     HashMap<String, Object> mmap = new HashMap<>();
                     mmap.put("id",mid+"");
-                    mmap.put("type",1);
+                    mmap.put("type",0);
                     return SaResult.ok().setData(mmap);
 
                 case IncorrectPassword:

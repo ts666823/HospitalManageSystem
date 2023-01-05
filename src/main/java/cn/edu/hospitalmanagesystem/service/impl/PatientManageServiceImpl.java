@@ -2,6 +2,7 @@ package cn.edu.hospitalmanagesystem.service.impl;
 
 import cn.edu.hospitalmanagesystem.enums.LoginStatus;
 import cn.edu.hospitalmanagesystem.enums.SignupStatus;
+import cn.edu.hospitalmanagesystem.model.DoctorEntity;
 import cn.edu.hospitalmanagesystem.model.PatientEntity;
 import cn.edu.hospitalmanagesystem.repository.PatientRepository;
 import cn.edu.hospitalmanagesystem.service.PatientManageService;
@@ -75,6 +76,10 @@ public class PatientManageServiceImpl implements PatientManageService {
 
     @Override
     public Long update(PatientEntity patientEntity) {
+        if (patientEntity.getPassword() == null || patientEntity.getPassword().isEmpty()) {
+            PatientEntity patientEntity1 = patientRepository.findPatientEntityByIdNumber(patientEntity.getIdNumber());
+            patientEntity.setPassword(patientEntity1.getPassword());
+        }
         patientRepository.save(patientEntity);
 
         return patientEntity.getId();

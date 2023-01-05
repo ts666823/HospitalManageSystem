@@ -47,6 +47,10 @@ public class DoctorManageServiceImpl implements DoctorManageService {
 
     @Override
     public Long update(DoctorEntity doctorEntity) {
+        if (doctorEntity.getPassword() == null || doctorEntity.getPassword().isEmpty()) {
+            DoctorEntity mdoctorEntity = doctorRepository.findDoctorEntityByIdNumber(doctorEntity.getIdNumber());
+            doctorEntity.setPassword(mdoctorEntity.getPassword());
+        }
         doctorRepository.save(doctorEntity);
         return doctorEntity.getId();
     }
