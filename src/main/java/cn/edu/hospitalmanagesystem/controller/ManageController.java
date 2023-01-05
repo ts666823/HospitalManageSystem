@@ -144,4 +144,9 @@ public class ManageController {
         appointmentManageService.updateOrder(id,status);
         return SaResult.ok();
     }
-}
+
+    @GetMapping("/getOrder")
+    public SaResult getOrder(@RequestParam("id")Long id) {
+        return SaResult.ok().setData(appointmentManageService.getOrder(id));
+    }
+    }
