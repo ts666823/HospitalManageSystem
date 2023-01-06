@@ -4,6 +4,7 @@ import cn.edu.hospitalmanagesystem.enums.LoginStatus;
 import cn.edu.hospitalmanagesystem.model.DoctorEntity;
 import cn.edu.hospitalmanagesystem.repository.DoctorRepository;
 import cn.edu.hospitalmanagesystem.service.DoctorManageService;
+import com.github.yitter.idgen.YitIdHelper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -59,5 +60,13 @@ public class DoctorManageServiceImpl implements DoctorManageService {
     @Override
     public List<DoctorEntity> getDoctors(String outpatient) {
         return doctorRepository.findDoctorEntitiesByOutpatient(outpatient);
+    }
+
+    @Override
+    public Long addDoctor(DoctorEntity doctorEntity) {
+        long id = YitIdHelper.nextId();
+        doctorEntity.setId(id);
+        doctorRepository.save(doctorEntity);
+        return id;
     }
 }

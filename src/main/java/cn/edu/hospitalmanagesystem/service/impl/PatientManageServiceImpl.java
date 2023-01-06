@@ -2,7 +2,6 @@ package cn.edu.hospitalmanagesystem.service.impl;
 
 import cn.edu.hospitalmanagesystem.enums.LoginStatus;
 import cn.edu.hospitalmanagesystem.enums.SignupStatus;
-import cn.edu.hospitalmanagesystem.model.DoctorEntity;
 import cn.edu.hospitalmanagesystem.model.PatientEntity;
 import cn.edu.hospitalmanagesystem.repository.PatientRepository;
 import cn.edu.hospitalmanagesystem.service.PatientManageService;

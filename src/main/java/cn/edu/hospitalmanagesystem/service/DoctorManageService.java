@@ -19,4 +19,6 @@ public interface DoctorManageService {
 
     List<DoctorEntity> getDoctors(String outpatient);
 
+    Long addDoctor(DoctorEntity doctorEntity);
+
 }
