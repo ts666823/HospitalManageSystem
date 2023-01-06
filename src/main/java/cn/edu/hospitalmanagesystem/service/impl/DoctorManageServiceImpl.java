@@ -7,6 +7,7 @@ import cn.edu.hospitalmanagesystem.service.DoctorManageService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -53,5 +54,10 @@ public class DoctorManageServiceImpl implements DoctorManageService {
         }
         doctorRepository.save(doctorEntity);
         return doctorEntity.getId();
+    }
+
+    @Override
+    public List<DoctorEntity> getDoctors(String outpatient) {
+        return doctorRepository.findDoctorEntitiesByOutpatient(outpatient);
     }
 }

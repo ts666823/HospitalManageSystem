@@ -15,7 +15,10 @@ import cn.dev33.satoken.util.SaResult;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @Api(tags = "用户管理")
@@ -149,4 +152,22 @@ public class ManageController {
     public SaResult getOrder(@RequestParam("id")Long id) {
         return SaResult.ok().setData(appointmentManageService.getOrder(id));
     }
+
+    @GetMapping("/getDoctor")
+    public SaResult getDoctor(@RequestParam("outpatient")String outpatient) {
+        List<DoctorEntity> doctors = doctorManageService.getDoctors(outpatient);
+        List<Map<String,Object>> result = new ArrayList<>();
+        for (DoctorEntity doctorEntity:doctors){
+            Map<String,Object> map = new HashMap<>();
+            map.put("doctorId",doctorEntity.getId());
+            map.put("sex",doctorEntity.getSex());
+            map.put("description",doctorEntity.getDescription());
+            map.put("name",doctorEntity.getName());
+            map.put("price",doctorEntity.getPrice());
+            result.add(map);
+        }
+        return  SaResult.ok().setData(doctors);
+
+    }
+
     }
