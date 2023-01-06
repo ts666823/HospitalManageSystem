@@ -45,7 +45,7 @@ public class AppointmentManageServiceImpl implements AppointmentManageService {
 
     @Override
     public ArrayList<Map<String,Object>> getOrder(long id) {
-        List<AppointmentEntity> appointmentEntityList = appointmentRepository.findAppointmentEntitiesByDoctorIdOrPatientId(id,id);
+        List<AppointmentEntity> appointmentEntityList = appointmentRepository.findAppointmentEntitiesByDoctorIdOrPatientIdOrderByTime(id,id);
         ArrayList<Map<String,Object>> list = new ArrayList<>();
         for (AppointmentEntity appointmentEntity :appointmentEntityList){
             HashMap<String,Object> mmap = new HashMap<>();

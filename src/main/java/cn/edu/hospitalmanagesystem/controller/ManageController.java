@@ -1,6 +1,5 @@
 package cn.edu.hospitalmanagesystem.controller;
 
-import cn.edu.hospitalmanagesystem.bean.LoginBean;
 import cn.edu.hospitalmanagesystem.bean.OrderBean;
 import cn.edu.hospitalmanagesystem.model.DoctorEntity;
 import cn.edu.hospitalmanagesystem.model.PatientEntity;
@@ -44,27 +43,27 @@ public class ManageController {
                 long id = patientManageService.getIdByIdNumber(idNumber);
                 System.out.println(id);
                 HashMap<String, Object> map = new HashMap<>();
-                map.put("id",id+"");
-                map.put("type",1);
+                map.put("id", id + "");
+                map.put("type", 1);
                 return SaResult.ok().setData(map);
 
             case IncorrectPassword:
                 return SaResult.code(400).setMsg("Incorrect Password");
             case NoPatient:
-            switch (doctorManageService.doctorLogin(idNumber, password)){
-                case Success:
-                    long mid = doctorManageService.getIdByIdNumber(idNumber);
-                    System.out.println(mid);
-                    HashMap<String, Object> mmap = new HashMap<>();
-                    mmap.put("id",mid+"");
-                    mmap.put("type",0);
-                    return SaResult.ok().setData(mmap);
+                switch (doctorManageService.doctorLogin(idNumber, password)) {
+                    case Success:
+                        long mid = doctorManageService.getIdByIdNumber(idNumber);
+                        System.out.println(mid);
+                        HashMap<String, Object> mmap = new HashMap<>();
+                        mmap.put("id", mid + "");
+                        mmap.put("type", 0);
+                        return SaResult.ok().setData(mmap);
 
-                case IncorrectPassword:
-                    return SaResult.code(400).setMsg("Incorrect Password");
-                case NoDoctor:
-                    return SaResult.code(404).setMsg("No Such Person");
-            }
+                    case IncorrectPassword:
+                        return SaResult.code(400).setMsg("Incorrect Password");
+                    case NoDoctor:
+                        return SaResult.code(404).setMsg("No Such Person");
+                }
         }
         return SaResult.code(500).setMsg("Unknown State");
     }
@@ -84,7 +83,7 @@ public class ManageController {
     }
 
     @GetMapping("/getInfo")
-    public SaResult getInfo(@RequestParam("id") Long id){
+    public SaResult getInfo(@RequestParam("id") Long id) {
         PatientEntity patientEntity = patientManageService.getPatientEntity(id);
         HashMap<String, Object> data = new HashMap<>();
 
@@ -107,6 +106,7 @@ public class ManageController {
             data.put("idNumber", doctorEntity.getIdNumber());
             data.put("description", doctorEntity.getDescription());
             data.put("outpatient", doctorEntity.getOutpatient());
+            data.put("image",doctorEntity.getImage());
             data.put("type", 0);
 
             return SaResult.ok().setData(data);
@@ -117,57 +117,73 @@ public class ManageController {
     }
 
     @PostMapping("/updatePatient")
-    public SaResult update(@RequestBody PatientEntity patientEntity){
+    public SaResult update(@RequestBody PatientEntity patientEntity) {
 
         return SaResult.ok().setData(patientManageService.update(patientEntity).toString());
     }
 
     @PostMapping("/updateDoctor")
-    public SaResult update(@RequestBody DoctorEntity doctorEntity){
+    public SaResult update(@RequestBody DoctorEntity doctorEntity) {
 
         return SaResult.ok().setData(doctorManageService.update(doctorEntity).toString());
     }
 
     @GetMapping("/recharge")
-    public SaResult recharge(@RequestParam("id") Long id,@RequestParam("add") int add){
+    public SaResult recharge(@RequestParam("id") Long id, @RequestParam("add") int add) {
 
-        patientManageService.add(id,add);
+        patientManageService.add(id, add);
         return SaResult.ok();
     }
 
     @GetMapping("/order")
-    public SaResult order(@RequestBody OrderBean orderBean){
+    public SaResult order(@RequestBody OrderBean orderBean) {
 
         Timestamp timestamp = new Timestamp(orderBean.getTime());
-        appointmentManageService.order(orderBean.getPatientId(),orderBean.getDoctorId(),timestamp);
+        appointmentManageService.order(orderBean.getPatientId(), orderBean.getDoctorId(), timestamp);
         return SaResult.ok();
     }
+
     @GetMapping("/updateOrder")
-    public SaResult order(@RequestParam("id")Long id,@RequestParam("status")int status){
-        appointmentManageService.updateOrder(id,status);
+    public SaResult order(@RequestParam("id") Long id, @RequestParam("status") int status) {
+        appointmentManageService.updateOrder(id, status);
         return SaResult.ok();
     }
 
     @GetMapping("/getOrder")
-    public SaResult getOrder(@RequestParam("id")Long id) {
+    public SaResult getOrder(@RequestParam("id") Long id) {
         return SaResult.ok().setData(appointmentManageService.getOrder(id));
     }
 
     @GetMapping("/getDoctor")
-    public SaResult getDoctor(@RequestParam("outpatient")String outpatient) {
+    public SaResult getDoctor(@RequestParam("outpatient") String outpatient) {
         List<DoctorEntity> doctors = doctorManageService.getDoctors(outpatient);
-        List<Map<String,Object>> result = new ArrayList<>();
-        for (DoctorEntity doctorEntity:doctors){
-            Map<String,Object> map = new HashMap<>();
-            map.put("doctorId",doctorEntity.getId());
-            map.put("sex",doctorEntity.getSex());
-            map.put("description",doctorEntity.getDescription());
-            map.put("name",doctorEntity.getName());
-            map.put("price",doctorEntity.getPrice());
+        List<Map<String, Object>> result = new ArrayList<>();
+        for (DoctorEntity doctorEntity : doctors) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("doctorId", doctorEntity.getId());
+            map.put("sex", doctorEntity.getSex());
+            map.put("description", doctorEntity.getDescription());
+            map.put("name", doctorEntity.getName());
+            map.put("price", doctorEntity.getPrice());
+            map.put("outpatient", doctorEntity.getOutpatient());
+            map.put("image", doctorEntity.getImage());
             result.add(map);
         }
-        return  SaResult.ok().setData(doctors);
-
+        return SaResult.ok().setData(result);
     }
 
+    @GetMapping("/addDoctor")
+    public SaResult addDoctor(@RequestParam("password") String password, @RequestParam("description") String description, @RequestParam("idNumber") String idNumber, @RequestParam("sex") String sex, @RequestParam("outpatient") String outpatient, @RequestParam("price") int price, @RequestParam("image") String image ,@RequestParam("name") String name) {
+        DoctorEntity doctorEntity = new DoctorEntity();
+        doctorEntity.setPassword(password);
+        doctorEntity.setDescription(description);
+        doctorEntity.setIdNumber(idNumber);
+        doctorEntity.setSex(sex);
+        doctorEntity.setOutpatient(outpatient);
+        doctorEntity.setPrice(price);
+        doctorEntity.setImage(image);
+        doctorEntity.setName(name);
+        return SaResult.ok().setData(doctorManageService.addDoctor(doctorEntity));
     }
+
+}
