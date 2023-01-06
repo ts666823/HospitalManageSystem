@@ -1,11 +1,9 @@
 package cn.edu.hospitalmanagesystem.service;
 
-import cn.edu.hospitalmanagesystem.model.AppointmentEntity;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 @Service
