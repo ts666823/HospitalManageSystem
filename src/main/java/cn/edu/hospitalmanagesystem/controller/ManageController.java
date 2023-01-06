@@ -2,10 +2,10 @@ package cn.edu.hospitalmanagesystem.controller;
 
 import cn.edu.hospitalmanagesystem.bean.OrderBean;
 import cn.edu.hospitalmanagesystem.model.DoctorEntity;
+import cn.edu.hospitalmanagesystem.model.MedicineEntity;
 import cn.edu.hospitalmanagesystem.model.PatientEntity;
-import cn.edu.hospitalmanagesystem.service.AppointmentManageService;
-import cn.edu.hospitalmanagesystem.service.DoctorManageService;
-import cn.edu.hospitalmanagesystem.service.PatientManageService;
+import cn.edu.hospitalmanagesystem.model.RecommendEntity;
+import cn.edu.hospitalmanagesystem.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +33,12 @@ public class ManageController {
 
     @Autowired
     private AppointmentManageService appointmentManageService;
+
+    @Autowired
+    private MedicineManageService medicineManageService;
+
+    @Autowired
+    private RecommendManageService recommendManageService;
 
     @GetMapping("/login")
     @ApiOperation(value = "病人/医生登录", notes = "输入账户和密码来登录账户，返回病人ID")
@@ -186,4 +192,33 @@ public class ManageController {
         return SaResult.ok().setData(doctorManageService.addDoctor(doctorEntity));
     }
 
+    @GetMapping("/addMedicine")
+    public SaResult addMedicine(@RequestParam("name") String name, @RequestParam("description") String description, @RequestParam("image") String image) {
+        MedicineEntity medicineEntity = new MedicineEntity();
+        medicineEntity.setDescription(description);
+        medicineEntity.setName(name);
+        medicineEntity.setImage(image);
+        return SaResult.ok().setData(medicineManageService.addMedicine(medicineEntity));
+    }
+
+    @GetMapping("/getMedicine")
+    public SaResult getMedicine() {
+        return SaResult.ok().setData(medicineManageService.getMedicine());
+    }
+
+    @GetMapping("/getRecommendMedicine")
+    public SaResult getRecommendMedicine(@RequestParam("id") long id) {
+      return SaResult.ok().setData(recommendManageService.getRecommendMedicine(id));
+    }
+
+
+    @GetMapping("/recommendMedicine")
+    public SaResult recommendMedicine(@RequestParam("patientId") long patientId,@RequestParam("doctorId") long doctorId,@RequestParam("medicineId") long medicineId,@RequestParam("appointmentId") long appointmentId) {
+        RecommendEntity recommendEntity = new RecommendEntity();
+        recommendEntity.setMedicineId(medicineId);
+        recommendEntity.setDoctorId(doctorId);
+        recommendEntity.setPatientId(patientId);
+        recommendEntity.setAppointmentId(appointmentId);
+        return SaResult.ok().setData(recommendManageService.recommend(recommendEntity));
+    }
 }
