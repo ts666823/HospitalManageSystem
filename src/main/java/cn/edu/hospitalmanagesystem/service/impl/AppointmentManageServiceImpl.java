@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class AppointmentManageServiceImpl implements AppointmentManageService {
@@ -65,6 +65,53 @@ public class AppointmentManageServiceImpl implements AppointmentManageService {
             list.add(mmap);
         }
         return list;
+    }
+
+    @Override
+    public ArrayList<Map<String, Object>> getOrderByStatus(long id, int status) {
+        List<AppointmentEntity> appointmentEntityList = appointmentRepository.findAppointmentEntitiesByDoctorIdOrPatientIdOrderByTimeDesc(id,id);
+        ArrayList<Map<String,Object>> list = new ArrayList<>();
+        for (AppointmentEntity appointmentEntity :appointmentEntityList){
+            if (appointmentEntity.getStatus() != status) continue;
+            HashMap<String,Object> mmap = new HashMap<>();
+            mmap.put("id",appointmentEntity.getId());
+            mmap.put("patientId",appointmentEntity.getPatientId());
+            mmap.put("money",appointmentEntity.getMoney());
+            mmap.put("time",appointmentEntity.getTime().getTime());
+            mmap.put("status",appointmentEntity.getStatus());
+            DoctorEntity doctorEntity = doctorRepository.findDoctorEntityById(appointmentEntity.getDoctorId());
+            HashMap<String,Object> doctorMap = new HashMap<>();
+            doctorMap.put("doctorId",doctorEntity.getId());
+            doctorMap.put("name",doctorEntity.getName());
+            doctorMap.put("outpatient",doctorEntity.getOutpatient());
+            doctorMap.put("description",doctorEntity.getDescription());
+            doctorMap.put("sex",doctorEntity.getSex());
+            mmap.put("doctor",doctorMap);
+            list.add(mmap);
+        }
+        return list;
+    }
+
+    @Override
+    public List<Long> getFreeTime(long doctorId,long time) {
+        List<AppointmentEntity> entities = appointmentRepository.findAppointmentEntitiesByDoctorId(doctorId);
+        Date date = new Date(time);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String curDay = dateFormat.format(date);
+        try {
+            date = dateFormat.parse(curDay);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        List<Long> result = new ArrayList<>();
+        for (int i=0;i<12;i++){
+            date.setHours(7+i);
+            result.add(date.getTime());
+        }
+        for (AppointmentEntity appointmentEntity:entities){
+            result.remove(appointmentEntity.getTime().getTime());
+        }
+        return result;
     }
 
 }

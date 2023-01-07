@@ -14,10 +14,9 @@ import cn.dev33.satoken.util.SaResult;
 
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 @Api(tags = "用户管理")
@@ -141,7 +140,7 @@ public class ManageController {
         return SaResult.ok();
     }
 
-    @GetMapping("/order")
+    @PostMapping("/order")
     public SaResult order(@RequestBody OrderBean orderBean) {
 
         Timestamp timestamp = new Timestamp(orderBean.getTime());
@@ -158,6 +157,12 @@ public class ManageController {
     @GetMapping("/getOrder")
     public SaResult getOrder(@RequestParam("id") Long id) {
         return SaResult.ok().setData(appointmentManageService.getOrder(id));
+    }
+
+    @GetMapping("/getOrderByStatus")
+    public SaResult getOrder(@RequestParam("id") Long id, @RequestParam("status") int status) {
+        System.out.println(status);
+        return SaResult.ok().setData(appointmentManageService.getOrderByStatus(id,status));
     }
 
     @GetMapping("/getDoctor")
@@ -221,4 +226,21 @@ public class ManageController {
         recommendEntity.setAppointmentId(appointmentId);
         return SaResult.ok().setData(recommendManageService.recommend(recommendEntity));
     }
+
+    @GetMapping("/getFreeTime")
+        public SaResult getFreeTime(@RequestParam("doctorId") long doctorId,@RequestParam("time") long time){
+        System.out.println(String.valueOf(System.currentTimeMillis()));
+        List<Long> freeTime = appointmentManageService.getFreeTime(doctorId, time);
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        List<String> dateList = new ArrayList<String>();
+       for (Long t:freeTime){
+           Date date = new Date(t);
+           String dateStr = dateFormat.format(date);
+           System.out.println(dateStr);
+           dateList.add(dateStr);
+       }
+        return SaResult.ok().setData(dateList);
+
+    }
+
 }
