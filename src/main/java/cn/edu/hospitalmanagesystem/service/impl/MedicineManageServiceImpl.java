@@ -27,4 +27,11 @@ public class MedicineManageServiceImpl implements MedicineManageService {
     public List<MedicineEntity> getMedicine() {
       return   medicineRepository.findAll();
     }
+
+    @Override
+    public List<MedicineEntity> searchMedicine(String name) {
+        return medicineRepository.findMedicineEntitiesByNameContains(name);
+    }
+
+
 }

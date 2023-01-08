@@ -1,6 +1,7 @@
 package cn.edu.hospitalmanagesystem.controller;
 
 import cn.edu.hospitalmanagesystem.bean.OrderBean;
+import cn.edu.hospitalmanagesystem.enums.OrderStatus;
 import cn.edu.hospitalmanagesystem.model.DoctorEntity;
 import cn.edu.hospitalmanagesystem.model.MedicineEntity;
 import cn.edu.hospitalmanagesystem.model.PatientEntity;
@@ -14,10 +15,9 @@ import cn.dev33.satoken.util.SaResult;
 
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 @Api(tags = "用户管理")
@@ -141,12 +141,17 @@ public class ManageController {
         return SaResult.ok();
     }
 
-    @GetMapping("/order")
+    @PostMapping("/order")
     public SaResult order(@RequestBody OrderBean orderBean) {
 
         Timestamp timestamp = new Timestamp(orderBean.getTime());
-        appointmentManageService.order(orderBean.getPatientId(), orderBean.getDoctorId(), timestamp);
+        OrderStatus orderStatus = appointmentManageService.order(orderBean.getPatientId(), orderBean.getDoctorId(), timestamp);
+        if (orderStatus.equals(OrderStatus.Success))
         return SaResult.ok();
+        else if (orderStatus.equals(OrderStatus.NotEnoughMoney))
+            return SaResult.code(400).setMsg("Not Enough Money");
+        return SaResult.code(500).setMsg("Unknown State");
+
     }
 
     @GetMapping("/updateOrder")
@@ -158,6 +163,12 @@ public class ManageController {
     @GetMapping("/getOrder")
     public SaResult getOrder(@RequestParam("id") Long id) {
         return SaResult.ok().setData(appointmentManageService.getOrder(id));
+    }
+
+    @GetMapping("/getOrderByStatus")
+    public SaResult getOrder(@RequestParam("id") Long id, @RequestParam("status") int status) {
+        System.out.println(status);
+        return SaResult.ok().setData(appointmentManageService.getOrderByStatus(id,status));
     }
 
     @GetMapping("/getDoctor")
@@ -221,4 +232,39 @@ public class ManageController {
         recommendEntity.setAppointmentId(appointmentId);
         return SaResult.ok().setData(recommendManageService.recommend(recommendEntity));
     }
+
+    @GetMapping("/getFreeTime")
+        public SaResult getFreeTime(@RequestParam("doctorId") long doctorId,@RequestParam("time") long time){
+        System.out.println(String.valueOf(System.currentTimeMillis()));
+        List<Long> freeTime = appointmentManageService.getFreeTime(doctorId, time);
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        List<String> dateList = new ArrayList<String>();
+       for (Long t:freeTime){
+           Date date = new Date(t);
+           String dateStr = dateFormat.format(date);
+           System.out.println(dateStr);
+           dateList.add(dateStr);
+       }
+        return SaResult.ok().setData(dateList);
+
+    }
+
+    @GetMapping("/searchMedicine")
+    public SaResult searchMedicine(@RequestParam("name") String name) {
+       return SaResult.ok().setData(medicineManageService.searchMedicine(name));
+    }
+
+    @GetMapping("/cancelRecommendMedicine")
+    public SaResult cancelRecommendMedicine(@RequestParam("medicineId") long medicineId,@RequestParam("appointmentId") long appointmentId) {
+
+
+            recommendManageService.cancelRecommendMedicine(medicineId,appointmentId);
+
+            return SaResult.ok();
+
+        }
+
+
+
+
 }

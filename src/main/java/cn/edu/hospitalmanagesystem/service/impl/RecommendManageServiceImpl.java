@@ -38,4 +38,9 @@ public class RecommendManageServiceImpl implements RecommendManageService {
         recommendRepository.save(recommendEntity);
        return id;
     }
+
+    @Override
+    public void cancelRecommendMedicine(long medicineId, long appointmentId) {
+        recommendRepository.deleteByMedicineIdAndAppointmentId(medicineId,appointmentId);
+    }
 }
