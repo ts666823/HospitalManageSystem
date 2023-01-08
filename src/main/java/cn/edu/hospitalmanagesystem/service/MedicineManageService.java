@@ -10,4 +10,7 @@ public interface MedicineManageService {
     Long addMedicine(MedicineEntity medicineEntity);
 
     List<MedicineEntity> getMedicine();
+
+    List<MedicineEntity> searchMedicine(String name);
+
 }

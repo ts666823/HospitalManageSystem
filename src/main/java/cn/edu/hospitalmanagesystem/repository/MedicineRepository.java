@@ -9,4 +9,6 @@ import java.util.List;
 public interface MedicineRepository extends JpaRepository<MedicineEntity,Long> {
 
     MedicineEntity findMedicineEntityById(long id);
+
+    List<MedicineEntity> findMedicineEntitiesByNameContains(String name);
 }

@@ -12,4 +12,7 @@ public interface RecommendManageService {
     List<MedicineEntity> getRecommendMedicine(Long id);
 
     Long recommend(RecommendEntity recommendEntity);
+
+    void cancelRecommendMedicine(long medicineId,long appointmentId);
+
 }

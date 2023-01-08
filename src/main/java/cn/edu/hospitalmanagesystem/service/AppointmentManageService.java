@@ -1,5 +1,6 @@
 package cn.edu.hospitalmanagesystem.service;
 
+import cn.edu.hospitalmanagesystem.enums.OrderStatus;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -9,7 +10,7 @@ import java.util.Map;
 
 @Service
 public interface AppointmentManageService {
-    void order(Long patientId, Long DoctorId, Timestamp timestamp);
+    OrderStatus order(Long patientId, Long DoctorId, Timestamp timestamp);
 
     void updateOrder(Long orderId,int status);
 

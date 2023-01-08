@@ -1,6 +1,7 @@
 package cn.edu.hospitalmanagesystem.controller;
 
 import cn.edu.hospitalmanagesystem.bean.OrderBean;
+import cn.edu.hospitalmanagesystem.enums.OrderStatus;
 import cn.edu.hospitalmanagesystem.model.DoctorEntity;
 import cn.edu.hospitalmanagesystem.model.MedicineEntity;
 import cn.edu.hospitalmanagesystem.model.PatientEntity;
@@ -144,8 +145,13 @@ public class ManageController {
     public SaResult order(@RequestBody OrderBean orderBean) {
 
         Timestamp timestamp = new Timestamp(orderBean.getTime());
-        appointmentManageService.order(orderBean.getPatientId(), orderBean.getDoctorId(), timestamp);
+        OrderStatus orderStatus = appointmentManageService.order(orderBean.getPatientId(), orderBean.getDoctorId(), timestamp);
+        if (orderStatus.equals(OrderStatus.Success))
         return SaResult.ok();
+        else if (orderStatus.equals(OrderStatus.NotEnoughMoney))
+            return SaResult.code(400).setMsg("Not Enough Money");
+        return SaResult.code(500).setMsg("Unknown State");
+
     }
 
     @GetMapping("/updateOrder")
@@ -242,5 +248,23 @@ public class ManageController {
         return SaResult.ok().setData(dateList);
 
     }
+
+    @GetMapping("/searchMedicine")
+    public SaResult searchMedicine(@RequestParam("name") String name) {
+       return SaResult.ok().setData(medicineManageService.searchMedicine(name));
+    }
+
+    @GetMapping("/cancelRecommendMedicine")
+    public SaResult cancelRecommendMedicine(@RequestParam("medicineId") long medicineId,@RequestParam("appointmentId") long appointmentId) {
+
+
+            recommendManageService.cancelRecommendMedicine(medicineId,appointmentId);
+
+            return SaResult.ok();
+
+        }
+
+
+
 
 }
