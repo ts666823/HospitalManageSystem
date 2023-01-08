@@ -81,6 +81,7 @@ public class AppointmentManageServiceImpl implements AppointmentManageService {
             doctorMap.put("outpatient",doctorEntity.getOutpatient());
             doctorMap.put("description",doctorEntity.getDescription());
             doctorMap.put("sex",doctorEntity.getSex());
+            doctorMap.put("image",doctorEntity.getImage());
             mmap.put("doctor",doctorMap);
             list.add(mmap);
         }
